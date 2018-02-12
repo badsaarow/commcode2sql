@@ -13,12 +13,14 @@ export default {
   data() {
     return {
       msg: 'Commcode2sql',
-      input: ''
+      input: '',
     };
   },
   methods: {
     json2sql(jsonString) {
-      this.parseJson(jsonString);
+      /* eslint-disable */
+      let commcodes = this.parseJson(jsonString);
+      console.log(commcodes);
     },
     parseJson(jsonString) {
       /* eslint-disable */
@@ -32,17 +34,26 @@ export default {
         return;
       }
 
-      //todo:전체 commcode인지
       if (json.commcodes) {
         console.log('full commcode');
+        return json;
       } else if (json.commcode) {
         console.log('partial commcode');
+        if (json.detailcodes) {
+          console.log('하나의 commcode full set');
+          //todo: full commcode set으로 변환
+        } else if (json.detailcode) {
+          console.log('단독 detailcode');
+          //todo: full commcode set으로 변환
+        } else {
+          alert("정상적인 commcode JSON이 아닙니다");
+          return;  
+        }
       } else {
         alert("정상적인 commcode JSON이 아닙니다");
         return;
       }
-      //todo:일부 commode 인지
-      
+     
       console.log(json);
     }
   }
