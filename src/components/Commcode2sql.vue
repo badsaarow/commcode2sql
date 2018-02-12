@@ -31,6 +31,17 @@ export default {
         alert('failed to parsing json : ' +  e.name);
         return;
       }
+
+      //todo:전체 commcode인지
+      if (json.commcodes) {
+        console.log('full commcode');
+      } else if (json.commcode) {
+        console.log('partial commcode');
+      } else {
+        alert("정상적인 commcode JSON이 아닙니다");
+        return;
+      }
+      //todo:일부 commode 인지
       
       console.log(json);
     }
