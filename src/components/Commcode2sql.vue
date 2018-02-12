@@ -1,11 +1,9 @@
 <template>
   <div class="commcode">
     <h1>{{ msg }}</h1>
-    <p style="white-space: pre-inline;">{{ input }}: {{ counter }}</p>
-    <br/>
      <textarea v-model="input"></textarea>
      <br/>
-     <button v-on:click="pop(input)">Add 1</button>
+     <button v-on:click="json2sql(input)">Add 1</button>
   </div>
 </template>
 
@@ -15,15 +13,26 @@ export default {
   data() {
     return {
       msg: 'Commcode2sql',
-      input: '',
-      counter: 0,
+      input: ''
     };
   },
   methods: {
-    pop(input) {
+    json2sql(jsonString) {
+      this.parseJson(jsonString);
+    },
+    parseJson(jsonString) {
       /* eslint-disable */
-      console.log(input);
-      alert(input);
+      console.log(jsonString);
+      let json;
+      try {
+        json = JSON.parse(jsonString);
+      } catch(e) {
+        console.log(e);
+        alert('failed to parsing json : ' +  e.name);
+        return;
+      }
+      
+      console.log(json);
     }
   }
 };
