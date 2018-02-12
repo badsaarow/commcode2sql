@@ -5,7 +5,7 @@
     <br/>
      <textarea v-model="input"></textarea>
      <br/>
-     <button v-on:click="pop">Add 1</button>
+     <button v-on:click="pop(input)">Add 1</button>
   </div>
 </template>
 
@@ -20,10 +20,10 @@ export default {
     };
   },
   methods: {
-    pop() {
+    pop(input) {
       /* eslint-disable */
-      console.log('helele');
-      alert('helele');
+      console.log(input);
+      alert(input);
     }
   }
 };
