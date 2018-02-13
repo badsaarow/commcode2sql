@@ -19,8 +19,20 @@ export default {
   methods: {
     json2sql(jsonString) {
       /* eslint-disable */
-      let commcodes = this.parseJson(jsonString);
-      console.log(commcodes);
+      const commcodes = this.parseJson(jsonString);
+      if (!commcodes) {
+        console.log('no commdes');
+        return;
+      }
+
+      for (let entity of commcodes.commcodes) {
+        console.log(entity.commcode);
+        for (let detail of entity.detailcodes) {
+          console.log(detail.detailcode);
+          //todo: make insert sql or update sql
+        }
+      }
+
     },
     parseJson(jsonString) {
       /* eslint-disable */
