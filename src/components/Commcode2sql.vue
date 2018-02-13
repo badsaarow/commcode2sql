@@ -10,6 +10,8 @@
      <br/>
      <button v-on:click="json2sql('insert')">INSERT문 만들기</button>&nbsp;
      <button v-on:click="json2sql('update')">UPDATE문 만들기</button>&nbsp;
+     <input type="checkbox" id="checkbox" v-model="isSingleLineSQL">
+     <label for="checkbox">한줄SQL</label>
      <br/>
      <br/>
      <textarea
@@ -85,7 +87,12 @@ export default {
             console.log(`invalid crud: ${crud}`);
             return;
           }
-          this.sqlString += this.makeFlatSql(sql) + '\n';
+          if (this.isSingleLineSQL) {
+            this.sqlString += this.makeFlatSql(sql) + '\n';
+          } else {
+            this.sqlString += sql + '\n';
+          }
+          
         }
       }
 
