@@ -85,7 +85,7 @@ export default {
             console.log(`invalid crud: ${crud}`);
             return;
           }
-          this.sqlString += sql;
+          this.sqlString += this.makeFlatSql(sql) + '\n';
         }
       }
 
@@ -101,6 +101,9 @@ export default {
       commcodeEntity["corder"] = detail.corder;
       commcodeEntity["delyn"] = detail.delyn ? 1: 0;
       return commcodeEntity;
+    },
+    makeFlatSql(sql) {
+      return sql.replace(/\r?\n?/g, '').replace(/\s\s+/g, ' ');
     },
     parseJson(jsonString) {
       /* eslint-disable */
