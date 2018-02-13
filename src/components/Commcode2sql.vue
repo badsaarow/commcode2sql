@@ -41,8 +41,6 @@ export default {
         return;
       }
 
-      console.log('commcodes', commcodes);
-      console.log('entity', commcodes.commcodes);
       for (let entity of commcodes.commcodes) {
         console.log(entity);
         for (let detail of entity.detailcodes) {
@@ -120,20 +118,19 @@ export default {
         return json;
       } else if (json.commcode) {
         console.log('partial commcode');
+        let newjson = {};
+        newjson["commcodes"] = [];
+        newjson["commcodes"].push([]);
+        newjson["commcodes"][0]["commcode"] = json.commcode;
         if (json.detailcodes) {
           console.log('하나의 commcode full set');
-          let newjson = {};
-          newjson["commcodes"] = [];
-          newjson["commcodes"].push([]);
-          newjson["commcodes"][0]["commcode"] = json.commcode;
-          console.log(json.detailcodes);
-          console.log(JSON.stringify(json.detailcodes));
-          console.log(JSON.parse(JSON.stringify(json.detailcodes)));
           newjson["commcodes"][0]["detailcodes"] =  JSON.parse(JSON.stringify(json.detailcodes));
           return newjson;
         } else if (json.detailcode) {
           console.log('단독 detailcode');
-          //todo: full commcode set으로 변환
+          newjson["commcodes"][0]["detailcodes"] = [];
+          newjson["commcodes"][0]["detailcodes"].push(JSON.parse(JSON.stringify(json)));
+          return newjson;
         } else {
           alert("정상적인 commcode JSON이 아닙니다");
           return;  
@@ -142,8 +139,6 @@ export default {
         alert("정상적인 commcode JSON이 아닙니다");
         return;
       }
-     
-      console.log(json);
     }
   }
 };
