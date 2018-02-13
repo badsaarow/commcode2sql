@@ -12,6 +12,11 @@
      <button v-on:click="json2sql('update')">UPDATE문 만들기</button>&nbsp;
      <input type="checkbox" id="checkbox" v-model="isSingleLineSQL">
      <label for="checkbox">한줄SQL</label>
+     &nbsp;&nbsp;&nbsp;
+     <button type="button"
+      v-clipboard:copy="sqlString"
+      v-clipboard:success="onCopy"
+      v-clipboard:error="onCopyError">Copy!</button>
      <br/>
      <br/>
      <textarea
@@ -28,12 +33,21 @@ export default {
   name: 'Commcode2sql',
   data() {
     return {
-      msg: 'Commcode2sql',
+      msg: '공통코드 SQL 만들기',
       jsonString: '',
       sqlString: '',
     };
   },
   methods: {
+    onCopy(e) {
+      /* eslint-disable */
+      console.log('copied : ' + e.text);
+    },
+    onCopyError() {
+      /* eslint-disable */
+      console.log('failed to copy texts');
+      alert('failed to copy texts');
+    },
     json2sql(crud) {
       /* eslint-disable */
       this.sqlString = '';
@@ -161,5 +175,9 @@ h1, h2 {
 }
 a {
   color: #42b983;
+}
+textarea {
+   font-family: inherit;
+   font-size: 14px;
 }
 </style>
