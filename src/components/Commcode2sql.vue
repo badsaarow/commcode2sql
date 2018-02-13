@@ -1,9 +1,23 @@
 <template>
   <div class="commcode">
     <h1>{{ msg }}</h1>
-     <textarea v-model="input"></textarea>
+     <textarea
+      placeholder="여기에 commcode json 붙여넣으시오"
+      cols="100"
+      rows="10"
+      v-model="jsonString">
+     </textarea>
      <br/>
-     <button v-on:click="json2sql(input)">Add 1</button>
+     <button v-on:click="json2sql('insert')">INSERT문 만들기</button>&nbsp;
+     <button v-on:click="json2sql('update')">UPDATE문 만들기</button>&nbsp;
+     <br/>
+     <br/>
+     <textarea
+      readonly
+      cols="100"
+      rows="10"
+      v-model="sqlString">
+     </textarea>
   </div>
 </template>
 
@@ -13,30 +27,85 @@ export default {
   data() {
     return {
       msg: 'Commcode2sql',
-      input: '',
+      jsonString: '',
+      sqlString: '',
     };
   },
   methods: {
-    json2sql(jsonString) {
+    json2sql(crud) {
       /* eslint-disable */
-      const commcodes = this.parseJson(jsonString);
+      this.sqlString = '';
+      const commcodes = this.parseJson(this.jsonString);
       if (!commcodes) {
-        console.log('no commdes');
+        console.log('no commcodes');
         return;
       }
 
+      console.log('commcodes', commcodes);
+      console.log('entity', commcodes.commcodes);
       for (let entity of commcodes.commcodes) {
-        console.log(entity.commcode);
+        console.log(entity);
         for (let detail of entity.detailcodes) {
-          console.log(detail.detailcode);
-          //todo: make insert sql or update sql
+          console.log(detail);
+          let commcode = this.makeCommcodeEntity(entity.commcode, detail);
+          let sql;
+          if (crud === 'insert') {
+            sql  = `
+                  INSERT INTO [dbo].[CommCodeTBL]
+                              ([CommCode]
+                              ,[DetailCode]
+                              ,[CName]
+                              ,[CValue]
+                              ,[CMemo]
+                              ,[COrder]
+                              ,[DelYN]
+                              ,[Creator])
+                          VALUES
+                              ('${commcode.commcode}' 
+                              ,'${commcode.detailcode}'
+                              ,'${commcode.cname}'
+                              ,'${commcode.cvalue}'
+                              ,'${commcode.cmemo}'
+                              ,${commcode.corder}
+                              ,${commcode.delyn}
+                              ,'system');          
+                `;
+          } else if (crud === 'update') {
+              sql = `
+                    UPDATE [dbo].[CommCodeTBL]
+                      SET [CName] = '${commcode.cname}'
+                          ,[CValue] = '${commcode.cvalue}'
+                          ,[CMemo] = '${commcode.cmemo}'
+                          ,[COrder] = ${commcode.corder}
+                          ,[DelYN] = ${commcode.delyn}
+                          ,[Updater] = 'system'
+                          ,[UpdateDate] = getdate()
+                    WHERE CommCode = '${commcode.commcode}'
+                      AND DetailCode = '${commcode.detailcode}';
+              `;
+          } else {
+            console.log(`invalid crud: ${crud}`);
+            return;
+          }
+          this.sqlString += sql;
         }
       }
 
     },
+    makeCommcodeEntity(commcode, detail) {
+      //ex. commcode:'OPT', detail: {"detailcode":"AC","cname":...}
+      let commcodeEntity = {};
+      commcodeEntity["commcode"] = commcode;
+      commcodeEntity["detailcode"] = detail.detailcode;
+      commcodeEntity["cname"] = detail.cname;
+      commcodeEntity["cvalue"] = !detail.cvalue ? '': detail.cvalue;
+      commcodeEntity["cmemo"] = !detail.cmemo ? '': detail.cmemo;
+      commcodeEntity["corder"] = detail.corder;
+      commcodeEntity["delyn"] = detail.delyn ? 1: 0;
+      return commcodeEntity;
+    },
     parseJson(jsonString) {
       /* eslint-disable */
-      console.log(jsonString);
       let json;
       try {
         json = JSON.parse(jsonString);
@@ -53,7 +122,15 @@ export default {
         console.log('partial commcode');
         if (json.detailcodes) {
           console.log('하나의 commcode full set');
-          //todo: full commcode set으로 변환
+          let newjson = {};
+          newjson["commcodes"] = [];
+          newjson["commcodes"].push([]);
+          newjson["commcodes"][0]["commcode"] = json.commcode;
+          console.log(json.detailcodes);
+          console.log(JSON.stringify(json.detailcodes));
+          console.log(JSON.parse(JSON.stringify(json.detailcodes)));
+          newjson["commcodes"][0]["detailcodes"] =  JSON.parse(JSON.stringify(json.detailcodes));
+          return newjson;
         } else if (json.detailcode) {
           console.log('단독 detailcode');
           //todo: full commcode set으로 변환
