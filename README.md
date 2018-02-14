@@ -12,6 +12,13 @@ npm install -g vue-cli
 git clone xxx
 ```
 
+## debugging
+
+Debugger for Chrome extention 설치
+./vscode/launch.json 설정 -> Fail : Debug adapter process has terminated unexpectedly
+ -> vscode 자체 debugging은 실패
+.vue 파일에 debugger; 추가후 chrome debugger에서 디버깅
+
 ## Build Setup
 
 ``` bash

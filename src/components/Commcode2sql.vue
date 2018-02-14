@@ -36,6 +36,7 @@ export default {
       msg: '공통코드 SQL 만들기',
       jsonString: '',
       sqlString: '',
+      isSingleLineSQL: false,
     };
   },
   methods: {
