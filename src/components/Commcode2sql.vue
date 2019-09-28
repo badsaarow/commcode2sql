@@ -76,14 +76,14 @@ export default {
                               ,[DelYN]
                               ,[Creator])
                           VALUES
-                              ('${commcode.commcode}' 
+                              ('${commcode.commcode}'
                               ,'${commcode.detailcode}'
                               ,'${commcode.cname}'
                               ,'${commcode.cvalue}'
                               ,'${commcode.cmemo}'
                               ,${commcode.corder}
                               ,${commcode.delyn}
-                              ,'system');          
+                              ,'system');
                 `;
           } else if (crud === 'update') {
               sql = `
@@ -107,7 +107,7 @@ export default {
           } else {
             this.sqlString += sql + '\n';
           }
-          
+
         }
       }
 
@@ -158,7 +158,7 @@ export default {
           return newjson;
         } else {
           alert("정상적인 commcode JSON이 아닙니다");
-          return;  
+          return;
         }
       } else {
         alert("정상적인 commcode JSON이 아닙니다");
@@ -168,17 +168,3 @@ export default {
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-a {
-  color: #42b983;
-}
-textarea {
-   font-family: inherit;
-   font-size: 14px;
-}
-</style>

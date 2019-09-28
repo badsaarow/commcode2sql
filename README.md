@@ -1,58 +1,29 @@
-# commcode2sql
+# commcode2sql2
 
-> 공통코드 JSON으로 INSERT, UPDATE SQL 문 만들기
-
-## 개발환경 설정
-
-``` bash
-# install vue cl
-npm install -g vue-cli
-
-# git clone
-git clone xxx
+## Project setup
 ```
-
-## debugging
-
-Debugger for Chrome extention 설치
-./vscode/launch.json 설정 -> Fail : Debug adapter process has terminated unexpectedly
- -> vscode 자체 debugging은 실패
-.vue 파일에 debugger; 추가후 chrome debugger에서 디버깅
-
-## Build Setup
-
-``` bash
-# install dependencies
 npm install
+```
 
-# serve with hot reload at localhost:8080
-npm run dev
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-# build for production with minification
+### Compiles and minifies for production
+```
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-## Deploy
-
-``` bash
-npm run build
-aws s3 cp ./dist/ s3://comsql.0970.co.kr/ --recursive
+### Run your tests
+```
+npm run test
 ```
 
-## S3 bucket
-
-``` bash
-aws s3api create-bucket --bucket comsql.0970.co.kr --region us-east-1
+### Lints and fixes files
 ```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
